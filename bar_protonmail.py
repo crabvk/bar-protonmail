@@ -7,12 +7,8 @@ from protonmail_api import Api, ApiRequestError, ApiResponseError
 
 DIR = Path(__file__).resolve().parent
 AUTH_PATH = Path(DIR, 'auth.json')
-unread = None
 
-
-def main():
-    global unread
-
+try:
     if not AUTH_PATH.is_file():
         output.error('auth.json not found')
         exit()
@@ -20,8 +16,8 @@ def main():
     with open(AUTH_PATH, 'r') as f:
         auth = json.load(f)
 
-    api = Api(auth['AccessToken'], auth['UID'])
-    session = None
+    api = Api(auth['UID'], auth['AccessToken'])
+    session, unread = None, None
     SESSION_PATH = Path(DIR, 'session.json')
     if SESSION_PATH.is_file():
         with open(SESSION_PATH, 'r') as f:
@@ -56,11 +52,7 @@ def main():
     if not session:
         SESSION_PATH.chmod(0o600)
 
-
-if __name__ == '__main__':
-    try:
-        main()
-    except ApiRequestError:
-        output.puts(unread or 0, True)
-    except ApiResponseError as e:
-        output.error(str(e))
+except ApiRequestError:
+    output.puts(unread or 0, True)
+except ApiResponseError as e:
+    output.error(str(e))

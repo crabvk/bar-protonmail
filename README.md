@@ -26,6 +26,10 @@ Sort by last column, newer to older (`Last Accessed ⯆`).
 For the first row name starting with `AUTH-` copy it's value (double-click and `Ctrl`+`C`).  
 Run `./save_auth.py VALUE`.
 
+**NOTE**: access token expires in 10 days (you'll see "Invalid access token" error). After that, you'll need to get a new token the same way.
+
+I tried to refresh expired `access token` with corresponding `refresh token`, but always got 401 "Invalid refresh token". Maybe it's because only latest refresh token is valid.
+
 ## Waybar config
 
 ~/.config/waybar/config
@@ -69,7 +73,7 @@ click-left = xdg-open https://mail.protonmail.com/inbox
 
 ## Script arguments
 
-See `python output.py -h` for list of arguments with description.  
+See `./bar_protonmail.py -h` for list of arguments with description.  
 Possible values for `-s`, `--sound`:
 ```shell
 ls /usr/share/sounds/freedesktop/stereo/

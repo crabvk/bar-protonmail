@@ -14,12 +14,12 @@ class ApiResponseError(Exception):
 
 
 class Api:
-    def __init__(self, access_token, uid):
+    def __init__(self, uid, access_token):
         self.host = 'https://api.protonmail.ch'
         self.headers = {
             'Authorization': 'Bearer ' + access_token,
             'x-pm-uid': uid,
-            'x-pm-appversion': 'Web_3.16.23'
+            'x-pm-appversion': 'Web_3.16.24'
         }
 
     def event_id(self):
