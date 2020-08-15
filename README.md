@@ -23,12 +23,15 @@ mv bar-protonmail-master bar-protonmail
 In Firefox go to your [ProtonMail inbox](https://mail.protonmail.com/inbox).  
 Open DevTools -> Storage (`Shift`+`F9`) -> Cookies.  
 Sort by last column, newer to older (`Last Accessed ⯆`).  
-For the first row name starting with `AUTH-` copy it's value (double-click and `Ctrl`+`C`).  
-Run `./save_auth.py VALUE`.
+Value of the first row with Name starting with `AUTH-` is your `AUTH` token,
+and with Name starting with `REFRESH-` is your `REFRESH` data (including UID).  
+Run `./save_auth.py AUTH REFRESH` to save your credentials.
 
-**NOTE**: access token expires in 10 days (you'll see "Invalid access token" error). After that, you'll need to get a new token the same way.
+**NOTE**: access token expires in 10 days (you'll see "Invalid access token" error). After that,
+you'll need to get a new token the same way.
 
-I tried to refresh expired `access token` with corresponding `refresh token`, but always got 401 "Invalid refresh token". Maybe it's because only latest refresh token is valid.
+I tried to refresh expired `access token` with corresponding `refresh token`,
+but always got 401 "Invalid refresh token". Maybe this is because only latest refresh token is valid.
 
 ## Waybar config
 

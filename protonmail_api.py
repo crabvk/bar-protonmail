@@ -19,7 +19,7 @@ class Api:
         self.headers = {
             'Authorization': 'Bearer ' + access_token,
             'x-pm-uid': uid,
-            'x-pm-appversion': 'Web_3.16.24'
+            'x-pm-appversion': 'Web_4.0.0-beta.20'
         }
 
     def event_id(self):
