@@ -43,7 +43,7 @@ try:
         inbox = next(c for c in resp['Counts'] if c['LabelID'] == '0')
         unread = inbox['Unread']
 
-    output.puts(unread)
+    output.info(unread)
 
     if not session or session['unread'] != unread or messages:
         with open(SESSION_PATH, 'w') as f:
@@ -53,6 +53,6 @@ try:
         SESSION_PATH.chmod(0o600)
 
 except ApiRequestError:
-    output.puts(unread or 0, True)
+    output.info(unread or 0, True)
 except ApiResponseError as e:
     output.error(str(e))

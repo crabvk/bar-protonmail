@@ -16,7 +16,14 @@ parser.add_argument('-n', '--max-notify', type=int, help='Limit number of notifi
 args = parser.parse_args()
 
 
-def puts(count, inaccurate=False):
+def puts(text):
+    try:
+        print(text, flush=True)
+    except BrokenPipeError:
+        pass
+
+
+def info(count, inaccurate=False):
     text = args.icon
     classes = set()
     if inaccurate:
@@ -25,17 +32,17 @@ def puts(count, inaccurate=False):
         text += f' {count}'
         classes.add('unread')
     if args.polybar:
-        return print(text, flush=True)
+        return puts(text)
     s = json.dumps({'text': text, 'class': list(classes)})
-    print(s, flush=True)
+    puts(s)
 
 
 def error(message):
     text = args.icon + ' ' + message
     if args.polybar:
-        return print(text, flush=True)
+        return puts(text)
     s = json.dumps({'text': text, 'class': 'error'})
-    print(s, flush=True)
+    puts(s)
 
 
 def notify(messages):
