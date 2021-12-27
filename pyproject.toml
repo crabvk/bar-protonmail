@@ -1,0 +1,6 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.autopep8]
+max_line_length = 100
