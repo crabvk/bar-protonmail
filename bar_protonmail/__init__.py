@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from pathlib import Path
 from bar_protonmail.output import Output, OutputFormat, UrgencyLevel
 from bar_protonmail.bar import Bar
