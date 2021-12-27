@@ -9,9 +9,26 @@
 
 ## Install
 
+### ArchLinux and derivatives
+
+[AUR package](https://aur.archlinux.org/packages/bar-protonmail/)
+
+### pip
+
 ```sh
 pip install bar-protonmail
 ```
+
+## Use
+
+First you need to authenticate the client:
+
+```sh
+bar-protonmail auth
+```
+
+then just run `bar-protonmail` or `bar-protonmail -f polybar`.
+Session, cache and log are stored in ~/.cache/bar-protonmail.
 
 ## Waybar config example
 
