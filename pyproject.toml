@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bar-protonmail"
-version = "1.0.0"
+version = "1.0.1"
 description = "Waybar/Polybar module for notifications and unread messages count from ProtonMail"
 license = "MIT"
 readme = "README.md"

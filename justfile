@@ -1,5 +1,5 @@
 build:
-    python -m build
+    poetry build
 
 install:
     pip install -e .
