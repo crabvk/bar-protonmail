@@ -1,6 +1,30 @@
+[tool.poetry]
+name = "bar-protonmail"
+version = "1.0.0"
+description = "Waybar/Polybar module for notifications and unread messages count from ProtonMail"
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/crabvk/bar-protonmail"
+authors = ["Vyacheslav Konovalov <crabvk@protonmail.com>"]
+keywords = ["waybar", "polybar", "protonmail"]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License"
+]
+
+[tool.poetry.scripts]
+bar_protonmail = "bar_protonmail:cli"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dnspython = "^2.2.1"
+proton-client = { git = "https://github.com/crabvk/proton-python-client.git" }
+
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.autopep8]
 max_line_length = 100
