@@ -24,7 +24,7 @@ pip install bar-protonmail
 First you need to authenticate the client:
 
 ```sh
-bar-protonmail auth
+bar_protonmail auth
 ```
 
 then just run `bar-protonmail` or `bar-protonmail -f polybar`.
@@ -66,14 +66,14 @@ modules-right = protonmail
 ...
 [module/protonmail]
 type = custom/script
-exec = bar-protonmail -f polybar
+exec = bar_protonmail -f polybar
 interval = 10
 click-left = xdg-open https://mail.protonmail.com/u/0/inbox
 ```
 
 ## Script arguments
 
-See `bar-protonmail -h` for the list of arguments with descriptions.  
+See `bar_protonmail -h` for the list of arguments with descriptions.  
 Possible values for `-s`, `--sound` can be found with:
 ```shell
 ls /usr/share/sounds/freedesktop/stereo/
