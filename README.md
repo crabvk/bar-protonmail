@@ -66,7 +66,7 @@ modules-right = protonmail
 ...
 [module/protonmail]
 type = custom/script
-exec = bar-protonmail -f polybar
+exec = bar_protonmail -f polybar
 interval = 10
 click-left = xdg-open https://mail.protonmail.com/u/0/inbox
 ```
