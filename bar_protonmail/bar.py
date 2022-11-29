@@ -71,7 +71,8 @@ class Bar:
                                       1 and m['Message']['Unread'], messages)
                 new_messages = list(map(self._message_to_notification, new_messages))
                 self.event_id = events['EventID']
-                self.output.notify(new_messages)
+                if len(new_messages) > 0:
+                    self.output.notify(new_messages)
 
             self.unread = self.get_unread()
             self.output.info(self.unread)
