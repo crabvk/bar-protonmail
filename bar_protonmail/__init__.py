@@ -19,6 +19,8 @@ def cli():
                         default='normal', help='Notification urgency level [default: normal].')
     parser.add_argument('-t', '--expire-time', type=int,
                         help='Notification timeout in milliseconds.')
+    parser.add_argument('-dn', '--no-notify', action='store_true',
+                        help='Disable new email notifications.')
     args = parser.parse_args()
 
     CACHE_DIR = Path(Path.home(), '.cache/bar-protonmail')
@@ -34,7 +36,8 @@ def cli():
         exit()
 
     output = Output(format=OutputFormat(args.format), badge=args.badge, sound=args.sound,
-                    urgency=UrgencyLevel(args.urgency), expire_millisecs=args.expire_time)
+                    urgency=UrgencyLevel(args.urgency), expire_millisecs=args.expire_time,
+                    notify=not args.no_notify)
 
     if not SESSION_PATH.is_file():
         output.error('session.json not found')

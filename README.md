@@ -2,10 +2,12 @@
 
 ## Dependencies
 
-* proton-client >= 0.7.1
-* libnotify
-* ttf-font-awesome (default badge )
+* proton-client >= 0.7.1 ([not available on pypi.org](https://github.com/ProtonMail/proton-python-client/issues/36))
+* ttf-font-awesome (default badge: )
+* libnotify (new email notifications, can be disabled with `-dn` flag)
 * libcanberra (optional, notification sound)
+
+To display notifications you must have a [notification daemon](https://wiki.archlinux.org/title/Desktop_notifications#Notification_servers) running on your system.
 
 ## Install
 
@@ -21,7 +23,7 @@ pip install bar-protonmail
 
 ## Use
 
-First you need to authenticate the client:
+First, you need to authenticate the client:
 
 ```sh
 bar-protonmail auth
@@ -43,7 +45,7 @@ Session, cache and log are stored in ~/.cache/bar-protonmail.
     "return-type": "json",
     "interval": 10,
     "tooltip": false,
-    "on-click": "xdg-open https://mail.protonmail.com/u/0/inbox"
+    "on-click": "xdg-open https://mail.proton.me/u/0/inbox"
 }
 ```
 ~/.config/waybar/style.css
@@ -68,7 +70,7 @@ modules-right = protonmail
 type = custom/script
 exec = bar-protonmail -f polybar
 interval = 10
-click-left = xdg-open https://mail.protonmail.com/u/0/inbox
+click-left = xdg-open https://mail.proton.me/u/0/inbox
 ```
 
 ## Script arguments
@@ -76,6 +78,6 @@ click-left = xdg-open https://mail.protonmail.com/u/0/inbox
 See `bar-protonmail -h` for the list of arguments with descriptions.  
 Possible values for `-s`, `--sound` can be found with:
 ```shell
-ls /usr/share/sounds/freedesktop/stereo/
+ls /usr/share/sounds/freedesktop/stereo/ | cut -d. -f1
 ```
-without extension, for example `-s message-new-instant`.
+for example `-s message-new-instant`.

@@ -72,7 +72,8 @@ class Bar:
                 new_messages = list(map(self._message_to_notification, new_messages))
                 self.event_id = events['EventID']
                 if len(new_messages) > 0:
-                    self.output.notify(new_messages)
+                    self.output.play_sound()
+                    self.output.show_notifications(new_messages)
 
             self.unread = self.get_unread()
             self.output.info(self.unread)

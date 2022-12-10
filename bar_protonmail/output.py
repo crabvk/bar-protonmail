@@ -19,13 +19,14 @@ class UrgencyLevel(Enum):
 
 
 class Output:
-    def __init__(self, format: OutputFormat, badge='', sound=None,
-                 urgency=UrgencyLevel.NORMAL, expire_millisecs=None):
+    def __init__(self, format: OutputFormat, badge='', sound=None, urgency=UrgencyLevel.NORMAL,
+                 expire_millisecs=None, notify=True):
         self.format = format
         self.badge = badge
         self.sound = sound
         self.urgency = urgency
         self.expire = expire_millisecs
+        self.notify = notify
 
     def _puts(self, text):
         try:
@@ -53,14 +54,16 @@ class Output:
         s = json.dumps({'text': text, 'class': 'error'})
         self._puts(s)
 
-    def notify(self, notifications):
+    def play_sound(self):
         if self.sound:
             Popen(['canberra-gtk-play', '-i', self.sound])
 
-        for n in notifications:
-            app = ['-a', 'bar-protonmail']
-            cat = ['-c', 'email.arrived']
-            icon = ['-i', ICON_PATH]
-            urgency = ['-u', self.urgency.value] if self.urgency else []
-            expire = ['-t', self.expire] if self.expire else []
-            Popen(['notify-send', *app, *cat, *icon, *urgency, *expire, n['title'], n['body']])
+    def show_notifications(self, notifications):
+        if self.notify:
+            for n in notifications:
+                app = ['-a', 'bar-protonmail']
+                cat = ['-c', 'email.arrived']
+                icon = ['-i', ICON_PATH]
+                urgency = ['-u', self.urgency.value] if self.urgency else []
+                expire = ['-t', self.expire] if self.expire else []
+                Popen(['notify-send', *app, *cat, *icon, *urgency, *expire, n['title'], n['body']])
