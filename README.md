@@ -15,11 +15,15 @@ To display notifications you must have a [notification daemon](https://wiki.arch
 
 [AUR package](https://aur.archlinux.org/packages/bar-protonmail/)
 
-### pip
+### Other distros
 
 ```sh
-pip install bar-protonmail
+git clone https://github.com/crabvk/bar-protonmail.git
+# WARN: Checkout to the latest tag, don't use master branch.
+pip install -e .
 ```
+
+And now you can execute *~/.local/bin/bar-protonmail*
 
 ## Use
 
