@@ -1,8 +1,9 @@
-from pathlib import Path
-from bar_protonmail.output import Output, OutputFormat, UrgencyLevel
-from bar_protonmail.bar import Bar
-from bar_protonmail import auth
+import sys
 import argparse
+from pathlib import Path
+from bar_protonmail.app import Application, UrgencyLevel
+from bar_protonmail.printer import WaybarPrinter, PolybarPrinter
+from bar_protonmail.protonmail import ProtonMail
 
 
 def cli():
@@ -13,38 +14,51 @@ def cli():
                         help='Print output in specified format [default: waybar].')
     parser.add_argument('-b', '--badge', default='',
                         help='Badge to display in the bar [default: ].')
+    parser.add_argument('-c', '--color',
+                        help='Text foreground color (only for Polybar).')
     parser.add_argument('-s', '--sound',
                         help='Notification sound (event sound ID from canberra-gtk-play).')
     parser.add_argument('-u', '--urgency', choices=['low', 'normal', 'critical'],
                         default='normal', help='Notification urgency level [default: normal].')
-    parser.add_argument('-t', '--expire-time', type=int,
-                        help='Notification timeout in milliseconds.')
+    parser.add_argument('-t', '--expire-timeout', type=int, default=0,
+                        help='The duration, in milliseconds, for the notification to appear on screen.')
     parser.add_argument('-dn', '--no-notify', action='store_true',
                         help='Disable new email notifications.')
     args = parser.parse_args()
 
-    CACHE_DIR = Path(Path.home(), '.cache/bar-protonmail')
-    SESSION_PATH = Path(CACHE_DIR, 'session.json')
-    UNREAD_PATH = Path(CACHE_DIR, 'unread.json')
+    if args.color is not None and args.format != 'polybar':
+        parser.error(
+            '`--color COLOR` can be used only with `--format polybar`.')
 
-    if not CACHE_DIR.is_dir():
-        CACHE_DIR.mkdir(exist_ok=True)
+    cache_dir = Path(Path.home(), '.cache/bar-protonmail')
+    session_path = Path(cache_dir, 'session.json')
+    unread_path = Path(cache_dir, 'unread.json')
+
+    if not cache_dir.is_dir():
+        cache_dir.mkdir(exist_ok=True)
+
+    protonmail = ProtonMail(cache_dir, session_path)
 
     if args.subcommand == 'auth':
-        auth.authenticate(CACHE_DIR, SESSION_PATH)
+        protonmail.authenticate()
         print('Session saved successfully.')
-        exit()
+        sys.exit()
 
-    output = Output(format=OutputFormat(args.format), badge=args.badge, sound=args.sound,
-                    urgency=UrgencyLevel(args.urgency), expire_millisecs=args.expire_time,
-                    notify=not args.no_notify)
+    if args.format == 'waybar':
+        printer = WaybarPrinter(badge=args.badge)
+    elif args.format == 'polybar':
+        printer = PolybarPrinter(badge=args.badge, color=args.color)
 
-    if not SESSION_PATH.is_file():
-        output.error('session.json not found')
-        exit()
+    if not session_path.is_file():
+        printer.error('Authentication required')
+        sys.exit()
 
-    bar = Bar(CACHE_DIR, SESSION_PATH, UNREAD_PATH, output)
-    bar.check()
+    app = Application(unread_path, protonmail, printer,
+                      sound_id=args.sound,
+                      urgency_level=UrgencyLevel[args.urgency.upper()],
+                      expire_timeout=args.expire_timeout,
+                      is_notify=not args.no_notify)
+    app.run()
 
 
 if __name__ == '__main__':
