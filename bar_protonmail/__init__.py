@@ -24,6 +24,8 @@ def cli():
                         help='The duration, in milliseconds, for the notification to appear on screen.')
     parser.add_argument('-dn', '--no-notify', action='store_true',
                         help='Disable new email notifications.')
+    parser.add_argument('-p', '--proxy', action='append', nargs=2, metavar=('PROTOCOL', 'URL'),
+                        help='Protocol and URL of the proxy (e.g. "https socks5://user:password@host:port").')
     args = parser.parse_args()
 
     if args.color is not None and args.format != 'polybar':
@@ -37,7 +39,7 @@ def cli():
     if not cache_dir.is_dir():
         cache_dir.mkdir(exist_ok=True)
 
-    protonmail = ProtonMail(cache_dir, session_path)
+    protonmail = ProtonMail(cache_dir, session_path, proxies=args.proxy)
 
     if args.subcommand == 'auth':
         protonmail.authenticate()

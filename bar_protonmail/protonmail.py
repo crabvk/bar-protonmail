@@ -6,10 +6,14 @@ from proton.exceptions import NetworkError, ProtonAPIError
 
 
 class ProtonMail:
-    def __init__(self, cache_dir: Path, session_path: Path):
+    def __init__(self, cache_dir: Path, session_path: Path, proxies: list[[str, str]] | None):
         self.cache_dir = cache_dir
         self.session_path = session_path
         self._session = None
+        if proxies:
+            self.proxies = dict(proxies)
+        else:
+            self.proxies = None
 
     @property
     def session(self):
@@ -20,7 +24,9 @@ class ProtonMail:
             self._session = Session.load(
                 dump=session_dump,
                 log_dir_path=self.cache_dir,
-                cache_dir_path=self.cache_dir
+                cache_dir_path=self.cache_dir,
+                tls_pinning=not self.proxies,
+                proxies=self.proxies
             )
             self._session.enable_alternative_routing = True
         return self._session
@@ -29,7 +35,9 @@ class ProtonMail:
         session = Session(
             api_url='https://api.protonmail.ch',
             log_dir_path=self.cache_dir,
-            cache_dir_path=self.cache_dir
+            cache_dir_path=self.cache_dir,
+            tls_pinning=not self.proxies,
+            proxies=self.proxies
         )
         session.enable_alternative_routing = True
 

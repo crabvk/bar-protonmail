@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bar-protonmail"
-version = "1.1.0"
+version = "1.2.0"
 description = "Get notifications and unread messages count from ProtonMail (Waybar/Polybar module)"
 license = "MIT"
 readme = "README.md"
@@ -23,6 +23,7 @@ dnspython = "^2.2.1"
 proton-client = { git = "https://github.com/crabvk/proton-python-client.git" }
 dasbus = "^1.7"
 pygobject = "^3.46.0"
+pysocks = "^1.7.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
