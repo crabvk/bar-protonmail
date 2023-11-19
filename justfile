@@ -1,4 +1,5 @@
 build:
+    rm -rf ./dist
     poetry build
 
 install:
@@ -7,5 +8,5 @@ install:
 uninstall:
     pip uninstall -y bar-protonmail
 
-upload:
-    python -m twine upload --repository pypi dist/*
+publish:
+    poetry publish

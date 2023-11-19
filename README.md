@@ -6,6 +6,7 @@
 * ttf-font-awesome (default badge: )
 * libnotify (new email notifications, can be disabled with `-dn` flag)
 * libcanberra (optional, notification sound)
+* PySocks (optional, support for proxies)
 
 To display notifications you must have a [notification daemon](https://wiki.archlinux.org/title/Desktop_notifications#Notification_servers) running on your system.
 
