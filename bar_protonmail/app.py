@@ -25,7 +25,8 @@ class UrgencyLevel(Enum):
 class Application:
     def __init__(self, unread_path: Path, protonmail: ProtonMail,
                  printer: WaybarPrinter | PolybarPrinter, sound_id: str,
-                 urgency_level: UrgencyLevel, expire_timeout: int, is_notify: bool):
+                 urgency_level: UrgencyLevel, expire_timeout: int, is_notify: bool,
+                 include_spam: bool):
         self.unread_path = unread_path
         self.protonmail = protonmail
         self.printer = printer
@@ -33,6 +34,7 @@ class Application:
         self.urgency_level = urgency_level
         self.expire_timeout = expire_timeout
         self.is_notify = is_notify
+        self.include_spam = include_spam
 
     @staticmethod
     def _message_to_notification(message):
@@ -41,6 +43,17 @@ class Application:
             'title': m.get('SenderName') or m.get('SenderAddress'),
             'body': m['Subject']
         }
+
+    def _message_filter(self, message):
+        # The message is:
+        # `'Action': 1` - newly arrived,
+        # `'Message': {'Unread': 1}` - unread,
+        # `'Message': {'LabelIDs': ['4']}` - spam.
+        return (
+            message['Action'] == 1
+            and message['Message']['Unread']
+            and (self.include_spam or '4' not in message['Message']['LabelIDs'])
+        )
 
     def _play_sound(self):
         try:
@@ -93,8 +106,7 @@ class Application:
             messages = events.get('Messages', [])
 
             if messages:
-                new_messages = filter(
-                    lambda m: m['Action'] == 1 and m['Message']['Unread'], messages)
+                new_messages = filter(self._message_filter, messages)
                 new_messages = list(map(self._message_to_notification, new_messages))
                 if len(new_messages) > 0:
                     if self.sound_id:

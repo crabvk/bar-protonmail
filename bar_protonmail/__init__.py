@@ -26,6 +26,8 @@ def cli():
                         help='Disable new email notifications.')
     parser.add_argument('-p', '--proxy', action='append', nargs=2, metavar=('PROTOCOL', 'URL'),
                         help='Protocol and URL of the proxy (e.g. "https socks5://user:password@host:port").')
+    parser.add_argument('-sm', '--spam', action='store_true',
+                        help='Enable new spam email notifications.')
     args = parser.parse_args()
 
     if args.color is not None and args.format != 'polybar':
@@ -59,7 +61,8 @@ def cli():
                       sound_id=args.sound,
                       urgency_level=UrgencyLevel[args.urgency.upper()],
                       expire_timeout=args.expire_timeout,
-                      is_notify=not args.no_notify)
+                      is_notify=not args.no_notify,
+                      include_spam=args.spam)
     app.run()
 
 
