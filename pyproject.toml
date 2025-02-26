@@ -25,6 +25,9 @@ dasbus = "^1.7"
 pygobject = "^3.46.0"
 pysocks = "^1.7.1"
 
+[tool.poetry.group.dev.dependencies]
+pip = "^25.0.1"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
