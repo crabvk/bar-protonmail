@@ -33,7 +33,7 @@ class ProtonMail:
 
     def authenticate(self):
         session = Session(
-            api_url='https://api.protonmail.ch',
+            api_url='https://mail-api.proton.me',
             log_dir_path=self.cache_dir,
             cache_dir_path=self.cache_dir,
             tls_pinning=not self.proxies,
@@ -53,7 +53,7 @@ class ProtonMail:
             json.dump(session.dump(), f)
 
     def get_unread(self):
-        resp = self.session.api_request('/messages/count')
+        resp = self.session.api_request('/api/mail/v4/messages/count')
         inbox = next(c for c in resp['Counts'] if c['LabelID'] == '0')
         return inbox['Unread']
 
